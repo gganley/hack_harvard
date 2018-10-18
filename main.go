@@ -6,6 +6,6 @@ import (
 
 func main() {
 	fmt.Println("hello world")
-	fmt.Println("Hi Jose~~ my bestie")
+	Jose()
 	PokemonGo()
 }
