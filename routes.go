@@ -85,6 +85,8 @@ func AddEntry(c *gin.Context) {
 
 func GetData(c *gin.Context) {
 	// Authenticate the user and then give their personal data
+
+	// Mild change
 	var b authType
 
 	binding.JSON.Bind(c.Request, &b)
