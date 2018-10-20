@@ -12,3 +12,6 @@
 *.out
 .idea/*
 *.iml
+
+server.crt
+server.key
