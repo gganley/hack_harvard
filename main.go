@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//
 type passwordEntry struct {
 	EntryUsername string `json:"entry_username"`
 	EntryPassword string `json:"entry_password"`

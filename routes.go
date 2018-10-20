@@ -106,7 +106,7 @@ func GetData(c *gin.Context) {
 	}
 }
 
-// Returns the uname and pw, ok means that the entry exists and matches means that the pw is valid
+// Returns the uname and pw, ok means that the entry exists and matches means that the pw is valid,
 func authFunctino(auth authType) (ok bool, matches bool) {
 	fmt.Println("trying to auth: ", auth, userExistsDB)
 	val, ok := userExistsDB[auth.Email]
