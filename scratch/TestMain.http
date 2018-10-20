@@ -6,7 +6,8 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 POST https://localhost:443/createuser
-Accept: */*
+Accept: application/json
+Content-Type: application/json
 Cache-Control: no-cache
 
 {
@@ -35,7 +36,7 @@ Cache-Control: no-cache
 
 ###
 
-GET https://localhost:443/getdata
+POST https://localhost:443/getdata
 Accept: application/json
 Content-Type: application/json
 Cache-Control: no-cache

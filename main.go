@@ -13,8 +13,8 @@ type passwordEntry struct {
 }
 
 type authType struct {
-	Pw    string `json:"pw"`
 	Email string `json:"email"`
+	Pw    string `json:"pw"`
 }
 
 type userDataKey struct {
@@ -30,7 +30,7 @@ var (
 
 func main() {
 	r := gin.Default()
-	r.GET("/getdata", GetData)
+	r.POST("/getdata", GetData)
 	r.POST("/createuser", CreateUser)
 	r.POST("/add", AddEntry)
 	r.POST("/entry/delete", DeleteEntry)

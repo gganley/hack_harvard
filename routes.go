@@ -1,25 +1,30 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 func DeleteEntry(c *gin.Context) {
-	auth, ok, matches := auth(c)
 
 	var b struct {
-		authType    `json:"auth"`
-		userDataKey `json:"entry"`
+		Auth  authType    `json:"auth"`
+		Entry userDataKey `json:"entry"`
 	}
+
 	c.Bind(&b)
+
+	ok, matches := authFunctino(b.Auth)
+
 	if ok && matches {
-		_, userDataExists := userDataDB[auth.Email][b.userDataKey]
+		_, userDataExists := userDataDB[b.Auth.Email][b.Entry]
 
 		if userDataExists {
-			delete(userDataDB[auth.Email], b.userDataKey)
+			delete(userDataDB[b.Auth.Email], b.Entry)
 			c.JSON(http.StatusOK, gin.H{"deleted": true})
 		} else {
 			c.JSON(http.StatusConflict, gin.H{"deleted": false})
@@ -35,41 +40,60 @@ func CreateUser(c *gin.Context) {
 	// {email: "gganley", pw: "hellokitty"}
 	// email := req.PostForm.Get("email")
 
-	auth, ok, _ := auth(c)
+	var b authType
+
+	c.Bind(&b)
+
+	fmt.Println("Creating user: ", b)
+	ok, _ := authFunctino(b)
 
 	if ok {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "User already exists"})
 	} else {
 		// TODO: Actually implement this
-		userExistsDB[auth.Email] = auth.Pw
-		userDataDB[auth.Email] = make(map[userDataKey]passwordEntry)
+		userExistsDB[b.Email] = b.Pw
+		userDataDB[b.Email] = make(map[userDataKey]passwordEntry)
 		c.JSON(http.StatusOK, gin.H{"status": "User created"})
 	}
 }
 
 func AddEntry(c *gin.Context) {
-	auth, ok, matches := auth(c)
-	var b struct {
+
+	type randomStruct struct {
 		Auth  authType      `json:"auth"`
 		Entry passwordEntry `json:"entry"`
 	}
 
-	c.Bind(&b)
+	var b randomStruct
+
+	err := binding.JSON.Bind(c.Request, &b)
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+
+	fmt.Println(b)
+
+	ok, matches := authFunctino(b.Auth)
 
 	if ok && matches {
-		userDataDB[auth.Email][userDataKey{b.Entry.EntryUsername, b.Entry.EntryDomain}] = b.Entry
+		userDataDB[b.Auth.Email][userDataKey{b.Entry.EntryUsername, b.Entry.EntryDomain}] = b.Entry
 		c.JSON(http.StatusOK, gin.H{"added": true})
 	} else {
-		c.JSON(http.StatusUnauthorized, gin.H{"status": "Unauthorized user"})
+		c.JSON(http.StatusForbidden, gin.H{"status": "Unauthorized user"})
 	}
 }
 
 func GetData(c *gin.Context) {
 	// Authenticate the user and then give their personal data
-	auth, ok, matches := auth(c)
+	var b authType
+
+	binding.JSON.Bind(c.Request, &b)
+	fmt.Println("Trying to get: ", b)
+
+	ok, matches := authFunctino(b)
 
 	if ok && matches {
-		userEntries := userDataDB[auth.Email]
+		userEntries := userDataDB[b.Email]
 		retVal := make(map[string]passwordEntry)
 		for k, v := range userEntries {
 			retVal[strings.Join([]string{k.KeyUsername, k.KeyDomain}, ":")] = v
@@ -81,12 +105,14 @@ func GetData(c *gin.Context) {
 }
 
 // Returns the uname and pw, ok means that the entry exists and matches means that the pw is valid
-func auth(c *gin.Context) (auth authType, ok bool, matches bool) {
-	c.Bind(&auth)
+func authFunctino(auth authType) (ok bool, matches bool) {
+	fmt.Println("trying to auth: ", auth, userExistsDB)
 	val, ok := userExistsDB[auth.Email]
+
 	if ok && val == auth.Pw {
 		matches = true
 	} else {
+		fmt.Println(auth, val, ok)
 		matches = false
 	}
 	return
