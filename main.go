@@ -12,9 +12,20 @@ type passwordEntry struct {
 	EntryDomain   string `json:"entry_domain"`
 }
 
+type authType struct {
+	Pw    string `json:"pw"`
+	Email string `json:"email"`
+}
+
+type userDataKey struct {
+	KeyUsername string `json:"key_username"`
+	KeyDomain   string `json:"key_domain"`
+}
+
 var (
 	userExistsDB = make(map[string]string)
-	userDataDB   = make(map[string][]passwordEntry)
+	userDataDB   = make(map[string]map[userDataKey]passwordEntry)
+	userMetaData = make(map[string]string) // Actual name map
 )
 
 func main() {
@@ -22,6 +33,7 @@ func main() {
 	r.GET("/getdata", GetData)
 	r.POST("/createuser", CreateUser)
 	r.POST("/add", AddEntry)
+	r.POST("/entry/delete", DeleteEntry)
 	err := r.RunTLS(":443", "ssl/dev.gganley.com.crt", "ssl/dev.gganley.com.key")
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
