@@ -1,4 +1,4 @@
-POST https://localhost:443/getdata
+GET https://localhost:443/getdata
 Accept: */*
 Cache-Control: no-cache
 

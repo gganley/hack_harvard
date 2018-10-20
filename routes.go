@@ -33,13 +33,18 @@ func CreateUser(c *gin.Context) {
 
 func AddEntry(c *gin.Context) {
 	uname, _, ok, matches := auth(c)
-	fmt.Println(c.Keys)
-	entryUsername := c.PostForm("entry_username")
-	entryPassword := c.PostForm("entry_password")
-	entryDomain := c.PostForm("entry_domain")
-	fmt.Println("adding: ", entryUsername, entryPassword, entryDomain)
+	var b passwordEntry
+	e := c.Bind(&b)
+
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	fmt.Println("adding: ", b)
+
 	if ok && matches {
-		userDataDB[uname] = append(userDataDB[uname], passwordEntry{entryUsername, entryPassword, entryDomain})
+		existingPwEntries := userDataDB[uname]
+		userDataDB[uname] = append(existingPwEntries, b)
 	}
 }
 

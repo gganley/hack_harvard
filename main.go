@@ -19,7 +19,7 @@ var (
 
 func main() {
 	r := gin.Default()
-	r.POST("/getdata", GetData)
+	r.GET("/getdata", GetData)
 	r.POST("/createuser", CreateUser)
 	r.POST("/add", AddEntry)
 	err := r.RunTLS(":443", "ssl/dev.gganley.com.crt", "ssl/dev.gganley.com.key")

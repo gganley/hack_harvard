@@ -1,5 +1,6 @@
 POST https://localhost:443/add
-Accept: */*
+Accept: application/json
+Content-Type: application/json
 Cache-Control: no-cache
 
 {
