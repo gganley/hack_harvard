@@ -1,0 +1,8 @@
+POST https://localhost:443/createuser
+Accept: */*
+Cache-Control: no-cache
+
+{uname: "gganley", pw: "testPass$"}
+
+###
+

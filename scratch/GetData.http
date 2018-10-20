@@ -1,0 +1,15 @@
+POST https://localhost:443/getdata
+Accept: */*
+Cache-Control: no-cache
+
+{uname: "gganley", pw: "testPass$"}
+
+<> 2018-10-20T075224.200.json
+<> 2018-10-20T075203.200.json
+<> 2018-10-20T075111.200.json
+<> 2018-10-20T074904.200.txt
+<> 2018-10-20T074758.200.txt
+<> 2018-10-20T074739.200.txt
+
+###
+

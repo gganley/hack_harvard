@@ -1,0 +1,14 @@
+POST https://localhost:443/add
+Accept: */*
+Cache-Control: no-cache
+
+{
+  "uname": "gganley",
+  "pw": "testPass$",
+  "entry_username": "gganley",
+  "entry_password": "testPass%",
+  "entry_domain": "google.com"
+}
+
+###
+
