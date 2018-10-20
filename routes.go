@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -39,8 +38,6 @@ func AddEntry(c *gin.Context) {
 	if e != nil {
 		log.Fatal(e)
 	}
-
-	fmt.Println("adding: ", b)
 
 	if ok && matches {
 		existingPwEntries := userDataDB[uname]

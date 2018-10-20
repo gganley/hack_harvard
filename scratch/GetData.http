@@ -1,8 +1,12 @@
 GET https://localhost:443/getdata
-Accept: */*
+Accept: application/json
+Content-Type: application/json
 Cache-Control: no-cache
 
-{uname: "gganley", pw: "testPass$"}
+{
+  "uname": "gganley",
+  "pw": "testPass$"
+}
 
 <> 2018-10-20T075224.200.json
 <> 2018-10-20T075203.200.json
