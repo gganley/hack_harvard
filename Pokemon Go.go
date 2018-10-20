@@ -1,6 +1,9 @@
 package main
 
 import (
+	/*
+	 *format package
+	 */
 	"fmt"
 )
 
