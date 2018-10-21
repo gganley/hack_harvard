@@ -106,6 +106,20 @@ func GetData(c *gin.Context) {
 	}
 }
 
+func Authenticate(c *gin.Context) {
+	var b authType
+
+	binding.JSON.Bind(c.Request, &b)
+
+	ok, matches := authFunctino(b)
+
+	if ok && matches {
+		c.JSON(http.StatusOK, gin.H{"auth": true})
+	} else {
+		c.JSON(403, gin.H{"auth": false})
+	}
+}
+
 // Returns the uname and pw, ok means that the entry exists and matches means that the pw is valid,
 func authFunctino(auth authType) (ok bool, matches bool) {
 	fmt.Println("trying to auth: ", auth, userExistsDB)

@@ -35,6 +35,7 @@ func main() {
 	r.POST("/createuser", CreateUser)
 	r.POST("/add", AddEntry)
 	r.POST("/entry/delete", DeleteEntry)
+	r.POST("/auth", Authenticate)
 	err := r.RunTLS(":443", "ssl/dev.gganley.com.crt", "ssl/dev.gganley.com.key")
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
